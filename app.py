@@ -15,39 +15,37 @@ import logging
 from dotenv import load_dotenv
 
 # app.py
+# app.py
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from extensions import db  # single db instance
 
-# -------------------- Flask app setup --------------------
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-# Database config
-uri = os.environ.get("DATABASE_URL")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+    # Database config
+    uri = os.environ.get("DATABASE_URL") or "postgresql://empoweruser:jolofan1@localhost:5432/empowerhub"
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = uri
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # Initialize db
+    db.init_app(app)
 
-# Initialize SQLAlchemy
-db = SQLAlchemy(app)
+    # Import models inside app context
+    with app.app_context():
+        from models import User
 
-# -------------------- Example model --------------------
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    # Example route
+    @app.route("/")
+    def home():
+        return "Hello, Flask + PostgreSQL is working!"
 
-    def __repr__(self):
-        return f"<User {self.username}>"
+    return app
 
-# -------------------- Example route --------------------
-@app.route("/")
-def home():
-    return "Hello, Flask + PostgreSQL is working!"
+app = create_app()
 
-# -------------------- Run app locally --------------------
 if __name__ == "__main__":
     app.run(debug=True)
 

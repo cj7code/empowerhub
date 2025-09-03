@@ -1,10 +1,8 @@
 # init_db.py
-from app import db, app
+from app import app
+from extensions import db
 
-def initialize_database():
+if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         print("✅ All tables created successfully!")
-
-if __name__ == "__main__":
-    initialize_database()
