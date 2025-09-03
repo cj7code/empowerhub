@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmpowerHub - AI-Powered Solutions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div>
+                <h1><i class="fas fa-seedling"></i>EmpowerHub</h1>
+                <p>AI-Powered Solutions</p>
+            </div>
+            <div id="user-info"></div>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <ul class="nav-tabs" id="auth-sections" style="display: none;">
+                <li><a href="#" data-target="dashboard" class="active">Dashboard</a></li>
+                <li><a href="#" data-target="education">Education</a></li>
+                <li><a href="#" data-target="health">Health</a></li>
+                <li><a href="#" data-target="nutrition">Nutrition</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+            <ul class="nav-tabs" id="unauth-sections" style="display: none;">
+                <li><a href="#" data-target="login" class="active">Login</a></li>
+                <li><a href="#" data-target="register">Register</a></li>
+            </ul>
+        </nav>
+
+        <!-- Login Section -->
+        <section id="login" class="section">
+            <div class="auth-container">
+                <h2 class="auth-title">Login to EmpowerHub</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-block">Login</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Don't have an account? <a href="#" data-target="register">Register here</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register" class="section" style="display: none;">
+            <div class="auth-container">
+                <h2 class="auth-title">Create an Account</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="register-email">Email</label>
+                        <input type="email" id="register-email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-password">Password</label>
+                        <input type="password" id="register-password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-phone">Phone (optional)</label>
+                        <input type="tel" id="register-phone" name="phone" class="form-input">
+                    </div>
+                    <button type="submit" class="btn btn-block">Register</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Already have an account? <a href="#" data-target="login">Login here</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section" style="display: none;">
+            <h2>Your Progress Dashboard</h2>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="learning-count">0</div>
+                    <div class="stat-label">Learning Activities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="health-count">0</div>
+                    <div class="stat-label">Health Trackings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="nutrition-count">0</div>
+                    <div class="stat-label">Meal Plans</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="waste-count">0</div>
+                    <div class="stat-label">Waste Reductions</div>
+                </div>
+            </div>
+
+            <!-- Wellness Score -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Wellness Score</h3>
+                    <span id="wellness-score">0%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" id="wellness-progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- SDG Progress -->
+            <div class="grid">
+                <div class="card sdg-4">
+                    <div class="card-header">
+                        <h3 class="card-title">Quality Education</h3>
+                    </div>
+                    <p>Your learning progress</p>
+                    <div class="progress">
+                        <div class="progress-bar" id="education-progress" style="width: 0%">0%</div>
+                    </div>
+                </div>
+                
+                <div class="card sdg-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Good Health</h3>
+                    </div>
+                    <p>Your wellness progress</p>
+                    <div class="progress">
+                        <div class="progress-bar" id="health-progress" style="width: 0%">0%</div>
+                    </div>
+                </div>
+                
+                <div class="card sdg-2">
+                    <div class="card-header">
+                        <h3 class="card-title">Zero Hunger</h3>
+                    </div>
+                    <p>Your nutrition progress</p>
+                    <div class="progress">
+                        <div class="progress-bar" id="nutrition-progress" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Learning</h3>
+                    </div>
+                    <div id="recent-learning">
+                        <p class="text-muted">Loading...</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Health</h3>
+                    </div>
+                    <div id="recent-health">
+                        <p class="text-muted">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section" style="display: none;">
+            <h2>Quality Education</h2>
+            
+            <div class="grid">
+                <!-- Learning Path Generator -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Generate Learning Path</h3>
+                    </div>
+                    <form id="learning-path-form">
+                        <div class="form-group">
+                            <label class="form-label" for="topic">Topic</label>
+                            <input type="text" id="topic" name="topic" class="form-input" required placeholder="e.g., Python Programming">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="level">Level</label>
+                            <select id="level" name="level" class="form-select" required>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-block">Generate Learning Path</button>
+                    </form>
+                    <div id="learning-path-result" class="result-container"></div>
+                </div>
+                
+                <!-- Question Answering -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ask a Question</h3>
+                    </div>
+                    <form id="qa-form">
+                        <div class="form-group">
+                            <label class="form-label" for="question">Question</label>
+                            <input type="text" id="question" name="question" class="form-input" required placeholder="e.g., What is climate change?">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="context">Context (optional)</label>
+                            <textarea id="context" name="context" class="form-textarea" placeholder="Provide additional context for your question"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block">Get Answer</button>
+                    </form>
+                    <div id="qa-result" class="result-container"></div>
+                </div>
+            </div>
+            
+            <!-- Education History -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Your Education History</h3>
+                </div>
+                <div id="education-history">
+                    <p class="text-muted">Loading your education history...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Section -->
+        <section id="health" class="section" style="display: none;">
+            <h2>Good Health & Well-being</h2>
+            
+            <div class="grid">
+                <!-- Mental Health Analysis -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Mental Health Analysis</h3>
+                    </div>
+                    <form id="mental-health-form">
+                        <div class="form-group">
+                            <label class="form-label" for="mood_text">How are you feeling today?</label>
+                            <textarea id="mood_text" name="mood_text" class="form-textarea" required placeholder="Describe your thoughts and feelings..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block">Analyze Mood</button>
+                    </form>
+                    <div id="mental-health-result" class="result-container"></div>
+                </div>
+                
+                <!-- Wellness Tracking -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Wellness Tracking</h3>
+                    </div>
+                    <form id="wellness-form">
+                        <div class="form-group">
+                            <label class="form-label" for="sleep_hours">Sleep Hours (last night)</label>
+                            <input type="number" id="sleep_hours" name="sleep_hours" class="form-input" min="0" max="24" step="0.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="exercise_minutes">Exercise Minutes (today)</label>
+                            <input type="number" id="exercise_minutes" name="exercise_minutes" class="form-input" min="0" max="300" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="water_glasses">Water Glasses (today)</label>
+                            <input type="number" id="water_glasses" name="water_glasses" class="form-input" min="0" max="20" required>
+                        </div>
+                        <button type="submit" class="btn btn-block">Track Wellness</button>
+                    </form>
+                    <div id="wellness-result" class="result-container"></div>
+                </div>
+                
+                <!-- Health Q&A -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Health Questions</h3>
+                    </div>
+                    <form id="health-qa-form">
+                        <div class="form-group">
+                            <label class="form-label" for="health_question">Ask a health question</label>
+                            <textarea id="health_question" name="question" class="form-textarea" required placeholder="e.g., What are the benefits of regular exercise?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block">Get Health Information</button>
+                    </form>
+                    <div id="health-qa-result" class="result-container"></div>
+                </div>
+            </div>
+            
+            <!-- Health History -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Your Health History</h3>
+                </div>
+                <div id="health-history">
+                    <p class="text-muted">Loading your health history...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nutrition Section -->
+        <section id="nutrition" class="section" style="display: none;">
+            <h2>Eat to Live</h2>
+            
+            <div class="grid">
+                <!-- Meal Plan Generator -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Generate Meal Plan</h3>
+                    </div>
+                    <form id="meal-plan-form">
+                        <div class="form-group">
+                            <label class="form-label" for="ingredients">Available Ingredients</label>
+                            <textarea id="ingredients" name="ingredients" class="form-textarea" required placeholder="Enter ingredients separated by commas (e.g., chicken, rice, tomatoes)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dietary_restrictions">Dietary Restrictions</label>
+                            <select id="dietary_restrictions" name="dietary_restrictions" class="form-select">
+                                <option value="none">None</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="gluten-free">Gluten-Free</option>
+                                <option value="dairy-free">Dairy-Free</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-block">Generate Meal Plan</button>
+                    </form>
+                    <div id="meal-plan-result" class="result-container"></div>
+                </div>
+                
+                <!-- Food Waste Reduction -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Reduce Food Waste</h3>
+                    </div>
+                    <form id="food-waste-form">
+                        <div class="form-group">
+                            <label class="form-label" for="expiring_items">Expiring Soon</label>
+                            <textarea id="expiring_items" name="expiring_items" class="form-textarea" required placeholder="Enter food items that are expiring soon (e.g., bananas, milk, bread)"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block">Get Waste Reduction Ideas</button>
+                    </form>
+                    <div id="food-waste-result" class="result-container"></div>
+                </div>
+                
+                <!-- Nutrition Advice -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Nutrition Advice</h3>
+                    </div>
+                    <form id="nutrition-advice-form">
+                        <div class="form-group">
+                            <label class="form-label" for="nutrition_question">Ask a nutrition question</label>
+                            <textarea id="nutrition_question" name="question" class="form-textarea" required placeholder="e.g., How can I get more protein in my diet?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-block">Get Nutrition Advice</button>
+                    </form>
+                    <div id="nutrition-advice-result" class="result-container"></div>
+                </div>
+            </div>
+            
+            <!-- Nutrition History -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Your Nutrition History</h3>
+                </div>
+                <div id="nutrition-history">
+                    <p class="text-muted">Loading your nutrition history...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Add this to index.html to enable donations -->
+    <form action="https://payment.intasend.com/checkout/" method="POST">
+    <!-- Replace with your actual IntaSend public key -->
+    <input type="hidden" name="public_key" value="YOUR_PUBLIC_KEY">
+    <input type="hidden" name="amount" value="5">
+    <input type="hidden" name="currency" value="USD">
+    <input type="hidden" name="redirect_url" value="https://yourapp.com/thankyou">
+    <button type="submit">Support Us 💸</button>
+    </form>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
