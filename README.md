@@ -30,28 +30,26 @@ The app allows users to:
 - Generate **personalized learning paths** (Beginner → Advanced).  
 - AI-powered **Q&A system** using Wikipedia API.  
 - View **education history** and progress dashboards.  
-![Education Screenshot](screenshots/education.png)
-<img src="screenshots/education.png" alt="Education" width="400"/>
+<img src="screenshots/education.png" alt="Education" width="300"/>
 
 ### 🏥 Health (SDG 3)  
 - **Mental health analysis** with simple AI sentiment scoring.  
 - **Daily wellness tracking** (sleep, exercise, hydration).  
 - AI-powered **health Q&A** with safety disclaimers.  
 - Health history and wellness progress.  
-![Health Screenshot](screenshots/health.png)
-<img src="screenshots/health.png" alt="Health" width="400"/>
+<img src="screenshots/health.png" alt="Health" width="300"/>
 
 ### 🥦 Nutrition (SDG 2)  
 - Generate **meal plans** based on ingredients + restrictions.  
 - Get **nutrition advice** and educational tips.  
 - Reduce **food waste** with creative ideas for expiring items.  
 - Track nutrition history and environmental impact.  
-<img src="screenshots/nutrition.png" alt="Nutrition" width="400"/>  
+<img src="screenshots/nutrition.png" alt="Nutrition" width="300"/>  
 
 ### 📊 Unified Dashboard  
 - Track progress across **all 3 SDGs** in one place.  
 - See stats, history, and wellness scores.  
-<img src="screenshots/dashboard.png" alt="Dashboard" width="400"/>
+<img src="screenshots/dashboard.png" alt="Dashboard" width="300"/>
 
 ### 💳 Monetization  
 - Integrated **IntaSend checkout** for donations and potential premium features.   
