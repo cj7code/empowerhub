@@ -14,6 +14,43 @@ from functools import wraps
 import logging
 from dotenv import load_dotenv
 
+# app.py
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+# -------------------- Flask app setup --------------------
+app = Flask(__name__)
+
+# Database config
+uri = os.environ.get("DATABASE_URL")
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Initialize SQLAlchemy
+db = SQLAlchemy(app)
+
+# -------------------- Example model --------------------
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+
+# -------------------- Example route --------------------
+@app.route("/")
+def home():
+    return "Hello, Flask + PostgreSQL is working!"
+
+# -------------------- Run app locally --------------------
+if __name__ == "__main__":
+    app.run(debug=True)
+
 # Load environment variables
 load_dotenv()
 
@@ -32,6 +69,8 @@ from config import DATABASE_CONFIG
 # =====================================
 # DATABASE CONNECTION AND SETUP
 # =====================================
+
+app.config['postgresql://empowerhub_user:JaBlROfdKX2x0aMAF8VqdTuORWPlQhTZ@dpg-d2saj9mmcj7s73ad7mn0-a/empowerhub'] = os.environ.get("DATABASE_URL")
 
 def get_db_connection():
     """Establish database connection with error handling"""
