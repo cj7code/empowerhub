@@ -15,39 +15,38 @@ import logging
 from dotenv import load_dotenv
 
 # app.py
-# app.py
 import os
 from flask import Flask
-from extensions import db  # single db instance
+from flask_sqlalchemy import SQLAlchemy
 
-def create_app():
-    app = Flask(__name__)
+app = Flask(__name__)
 
-    # Database config
-    uri = os.environ.get("DATABASE_URL") or "postgresql://empoweruser:jolofan1@localhost:5432/empowerhub"
-    if uri.startswith("postgres://"):
-        uri = uri.replace("postgres://", "postgresql://", 1)
-    app.config["SQLALCHEMY_DATABASE_URI"] = uri
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# 1. Check if DATABASE_URL is provided by Render
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-    # Initialize db
-    db.init_app(app)
+if DATABASE_URL:
+    # Render gives postgres:// but SQLAlchemy wants postgresql://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-    # Import models inside app context
-    with app.app_context():
-        from models import User
+    # Add SSL for Render Postgres
+    if "sslmode" not in DATABASE_URL:
+        DATABASE_URL += "?sslmode=require"
 
-    # Example route
-    @app.route("/")
-    def home():
-        return "Hello, Flask + PostgreSQL is working!"
+else:
+    # 2. If not on Render, use local MySQL (from .env)
+    DATABASE_URL = os.environ.get("LOCAL_DATABASE_URL")
 
-    return app
+# Apply config
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app = create_app()
+db = SQLAlchemy(app)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+with app.app_context():
+    db.create_all()
+
+
 
 # Load environment variables
 load_dotenv()
